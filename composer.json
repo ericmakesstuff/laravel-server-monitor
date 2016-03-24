@@ -1,0 +1,43 @@
+{
+    "name": "ericmakesstuff/server-monitor",
+    "description": "A Laravel 5 package to backup your application",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eric Blount",
+            "email": "eric@ericmakesstuff.com",
+            "homepage": "http://ericmakesstuff.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Freek Van der Herten",
+            "email": "freek@spatie.be",
+            "homepage": "https://spatie.be",
+            "role": "Inspiration/Base Package (Backup)"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "EricMakesStuff\\ServerMonitor\\": "src/"
+        }
+    },
+    "require": {
+        "illuminate/support": "^5.1",
+        "illuminate/console": "^5.1"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^3.2",
+        "phpunit/phpunit": "4.*"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EricMakesStuff\\ServerMonitor\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "suggest": {
+        "maknz/slack": "Allows notifications to be sent via Slack"
+    }
+}
