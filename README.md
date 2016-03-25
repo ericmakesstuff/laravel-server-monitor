@@ -31,7 +31,7 @@ You'll need to register the ServiceProvider:
 ];
 ```
 
-To publish the config file to app/config/laravel-backup.php run:
+To publish the config file to app/config/server-monitor.php run:
 
 `php artisan vendor:publish --provider="EricMakesStuff\ServerMonitor\ServerMonitorServiceProvider"`
 
