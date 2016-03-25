@@ -32,8 +32,8 @@ class Notifier
     {
         $this->sendNotification(
             'whenDiskUsageHealthy',
-            "Disk Usage on {$this->serverName} is Healthy at {$diskUsageMonitor->getPercentageUsed()} on {$diskUsageMonitor->getPath()}",
-            "Disk Usage on {$this->serverName}, filesystem {$diskUsageMonitor->getPath()} is okay: {$diskUsageMonitor->getPercentageUsed()}",
+            "Disk Usage on {$this->serverName} is Healthy at {$diskUsageMonitor->getPercentageUsed()} Used",
+            "Disk Usage is healthy on {$this->serverName}. Filesystem {$diskUsageMonitor->getPath()} is okay: {$diskUsageMonitor->getPercentageUsed()}",
             BaseSender::TYPE_SUCCESS
         );
     }
@@ -45,8 +45,8 @@ class Notifier
     {
         $this->sendNotification(
             'whenDiskUsageAlarm',
-            "Disk Usage on {$this->serverName} High! {$diskUsageMonitor->getPercentageUsed()} on {$diskUsageMonitor->getPath()}",
-            "Disk Usage on {$this->serverName}, filesystem {$diskUsageMonitor->getPath()} is above the alarm threshold ({$diskUsageMonitor->getAlarmPercentage()}) at {$diskUsageMonitor->getPercentageUsed()}",
+            "Disk Usage on {$this->serverName} High! {$diskUsageMonitor->getPercentageUsed()} Used",
+            "Disk Usage Alarm on {$this->serverName}! Filesystem {$diskUsageMonitor->getPath()} is above the alarm threshold ({$diskUsageMonitor->getAlarmPercentage()}) at {$diskUsageMonitor->getPercentageUsed()}",
             BaseSender::TYPE_ERROR
         );
     }
