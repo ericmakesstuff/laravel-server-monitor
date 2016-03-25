@@ -60,6 +60,10 @@ Run the tests with:
 vendor/bin/phpunit
 ```
 
+## Next Steps
+
+More monitoring metrics. Feel free to submit ideas via issues or pull requests!
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
@@ -70,8 +74,8 @@ If you discover any security related issues, please email eric@ericmakesstuff.co
 
 ## Credits
 
-- [Eric Blount](https://github.com/ericmakesstuff)
-- [Freek Van der Herten](https://github.com/freekmurze)
+- [Eric Blount](https://github.com/ericmakesstuff) - Author
+- [Freek Van der Herten](https://github.com/freekmurze) - Inspiration/Base Package ([Backup](https://github.com/spatie/laravel-backup))
 
 ## License
 
