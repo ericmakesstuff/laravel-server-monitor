@@ -1,6 +1,6 @@
 {
     "name": "ericmakesstuff/laravel-server-monitor",
-    "description": "A Laravel 5 package to backup your application",
+    "description": "Server Monitoring Command for Laravel Applications",
     "license": "MIT",
     "authors": [
         {
