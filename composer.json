@@ -1,5 +1,5 @@
 {
-    "name": "ericmakesstuff/server-monitor",
+    "name": "ericmakesstuff/laravel-server-monitor",
     "description": "A Laravel 5 package to backup your application",
     "license": "MIT",
     "authors": [
