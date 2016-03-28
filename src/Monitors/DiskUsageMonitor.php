@@ -55,7 +55,7 @@ class DiskUsageMonitor extends BaseMonitor
 
         $this->totalSpace = disk_total_space($this->path);
 
-        $this->freeSpace= disk_free_space($this->path);
+        $this->freeSpace = disk_free_space($this->path);
         
         $this->usedSpace = $this->totalSpace - $this->freeSpace;
 
