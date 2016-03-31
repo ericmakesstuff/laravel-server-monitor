@@ -2,6 +2,7 @@
 
 namespace EricMakesStuff\ServerMonitor\Notifications;
 
+use EricMakesStuff\ServerMonitor\Monitors\HttpPingMonitor;
 use Illuminate\Contracts\Logging\Log as LogContract;
 use EricMakesStuff\ServerMonitor\Monitors\DiskUsageMonitor;
 use Exception;
@@ -47,6 +48,37 @@ class Notifier
             'whenDiskUsageAlarm',
             "Disk Usage on {$this->serverName} High! {$diskUsageMonitor->getPercentageUsed()} Used",
             "Disk Usage Alarm on {$this->serverName}! Filesystem {$diskUsageMonitor->getPath()} is above the alarm threshold ({$diskUsageMonitor->getAlarmPercentage()}) at {$diskUsageMonitor->getPercentageUsed()}",
+            BaseSender::TYPE_ERROR
+        );
+    }
+
+    /**
+     * @param HttpPingMonitor $httpPingMonitor
+     */
+    public function httpPingUp(HttpPingMonitor $httpPingMonitor)
+    {
+        $this->sendNotification(
+            'whenHttpPingUp',
+            "HTTP Ping Success: {$httpPingMonitor->getUrl()}",
+            "HTTP Ping Succeeded for {$httpPingMonitor->getUrl()}. Response Code {$httpPingMonitor->getResponseCode()}.",
+            BaseSender::TYPE_SUCCESS
+        );
+    }
+
+    /**
+     * @param HttpPingMonitor $httpPingMonitor
+     */
+    public function httpPingDown(HttpPingMonitor $httpPingMonitor)
+    {
+        $additionalInfo = '';
+        if ($httpPingMonitor->getCheckPhrase() && ! $httpPingMonitor->getResponseContainsPhrase()) {
+            $additionalInfo = " Response did not contain \"{$httpPingMonitor->getCheckPhrase()}\"";
+        }
+
+        $this->sendNotification(
+            'whenHttpPingDown',
+            "HTTP Ping Failed: {$httpPingMonitor->getUrl()}!",
+            "HTTP Ping Failed for {$httpPingMonitor->getUrl()}! Response Code {$httpPingMonitor->getResponseCode()}.{$additionalInfo}",
             BaseSender::TYPE_ERROR
         );
     }

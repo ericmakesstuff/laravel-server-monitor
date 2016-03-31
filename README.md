@@ -6,12 +6,19 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/ericmakesstuff/laravel-server-monitor.svg?style=flat-square)](https://scrutinizer-ci.com/g/ericmakesstuff/laravel-server-monitor)
 [![Total Downloads](https://img.shields.io/packagist/dt/ericmakesstuff/laravel-server-monitor.svg?style=flat-square)](https://packagist.org/packages/ericmakesstuff/laravel-server-monitor)
 
-This Laravel 5 package will periodically monitor the health of your server. Currently, it provides healthy/alarm status notifications for Disk Usage.
+This Laravel 5 package will periodically monitor the health of your server. Currently, it provides healthy/alarm status notifications for Disk Usage, as well as an HTTP Ping function to monitor the health of external services.
 
 Once installed, monitoring your server is very easy. Just issue this artisan command:
 
 ``` bash
 php artisan monitor:run
+```
+
+You can run just certain monitors at a time:
+
+``` bash
+php artisan monitor:run DiskUsage
+php artisan monitor:run DiskUsage,HttpPing
 ```
 
 ## Installation and usage
@@ -35,6 +42,43 @@ To publish the config file to app/config/server-monitor.php run:
 
 `php artisan vendor:publish --provider="EricMakesStuff\ServerMonitor\ServerMonitorServiceProvider"`
 
+## Monitor Configuration
+
+After publishing the configuration file, you can edit the `'monitors'` section of app/config/server-monitor.php.
+
+The default monitor configurations are:
+
+```php
+'monitors' => [
+    /*
+     * DiskUsage will alert when the free space on the device exceeds the alarmPercentage.
+     * path is any valid file path, and the monitor will look at the usage of that disk partition.
+     *
+     * You may add as many DiskUsage monitors as you require.
+     */
+    'DiskUsage' => [
+        [
+            'path' => base_path(),
+            'alarmPercentage' => 75,
+        ],
+    ],
+    /*
+     * HttpPing will perform an HTTP request to the configured URL and alert if the response code
+     * is not 200, or if the optional checkPhrase is not found in the response.
+     */
+    'HttpPing' => [
+        [
+            'url' => 'http://www.example.com/',
+        ],
+        [
+            'url' => 'http://www.example.com/',
+            'checkPhrase' => 'Example Domain',
+            'timeout' => 10,
+            'allowRedirects' => false,
+        ],
+    ],
+```
+
 ## Scheduling
 
 After you have performed the basic installation you can start using the monitor:run command. In most cases you'll want to schedule this command so you don't have to manually run monitor:run every time you want to know the health of your server.
@@ -47,10 +91,11 @@ The commands can, like an other command, be scheduled in Laravel's console kerne
 protected function schedule(Schedule $schedule)
 {
    $schedule->command('monitor:run')->daily()->at('10:00');
+   $schedule->command('monitor:run HttpPing')->hourly();
 }
 ```
 
-Of course, the hour used in the code above is just an example. Adjust it to your own preferences.
+Of course, the schedules used in the code above are just an example. Adjust them to your own preferences.
 
 ## Testing
 

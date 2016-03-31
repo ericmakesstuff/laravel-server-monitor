@@ -2,9 +2,11 @@
 
 namespace EricMakesStuff\ServerMonitor\Notifications;
 
-use Illuminate\Events\Dispatcher;
+use EricMakesStuff\ServerMonitor\Events\HttpPingDown;
+use EricMakesStuff\ServerMonitor\Events\HttpPingUp;
 use EricMakesStuff\ServerMonitor\Events\DiskUsageAlarm;
 use EricMakesStuff\ServerMonitor\Events\DiskUsageHealthy;
+use Illuminate\Events\Dispatcher;
 
 class EventHandler
 {
@@ -37,6 +39,22 @@ class EventHandler
     }
 
     /**
+     * @param \EricMakesStuff\ServerMonitor\Events\HttpPingDown $event
+     */
+    public function whenHttpPingDown(HttpPingDown $event)
+    {
+        $this->notifier->httpPingDown($event->httpPingMonitor);
+    }
+
+    /**
+     * @param \EricMakesStuff\ServerMonitor\Events\HttpPingUp $event
+     */
+    public function whenHttpPingUp(HttpPingUp $event)
+    {
+        $this->notifier->httpPingUp($event->httpPingMonitor);
+    }
+
+    /**
      * Register the listeners for the subscriber.
      *
      * @param \Illuminate\Events\Dispatcher $events
@@ -53,6 +71,16 @@ class EventHandler
         $events->listen(
             DiskUsageAlarm::class,
             static::class.'@whenDiskUsageAlarm'
+        );
+
+        $events->listen(
+            HttpPingUp::class,
+            static::class.'@whenHttpPingUp'
+        );
+
+        $events->listen(
+            HttpPingDown::class,
+            static::class.'@whenHttpPingDown'
         );
     }
 }

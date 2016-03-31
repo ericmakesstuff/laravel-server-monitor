@@ -8,12 +8,18 @@ class ServerMonitorFactory
 {
     /**
      * @param array $monitorConfiguration
+     * @param array $filter
      * @return mixed
-     * @throws \EricMakesStuff\ServerMonitor\Exceptions\InvalidConfiguration
      */
-    public static function createForMonitorConfig(array $monitorConfiguration)
+    public static function createForMonitorConfig(array $monitorConfiguration, array $filter = [])
     {
-        return collect($monitorConfiguration)->map(function($monitorConfigs, $monitorName) {
+        $monitors = collect($monitorConfiguration);
+
+        if (count($filter) && !empty($filter[0])) {
+            $monitors = $monitors->only($filter);
+        }
+
+        return $monitors->map(function($monitorConfigs, $monitorName) {
             if (file_exists(__DIR__.'/'.ucfirst($monitorName).'Monitor.php')) {
                 $className = '\\EricMakesStuff\\ServerMonitor\\Monitors\\'.ucfirst($monitorName).'Monitor';
                 return collect($monitorConfigs)->map(function($monitorConfig) use ($className) {

@@ -10,7 +10,7 @@ class RunCommand extends BaseCommand
     /**
      * @var string
      */
-    protected $signature = 'monitor:run';
+    protected $signature = 'monitor:run {monitor? : Comma-delimited list of names of specific monitors to run}';
 
     /**
      * @var string
@@ -19,7 +19,10 @@ class RunCommand extends BaseCommand
 
     public function handle()
     {
-        $monitors = ServerMonitorFactory::createForMonitorConfig(config('server-monitor.monitors'));
+        $monitors = ServerMonitorFactory::createForMonitorConfig(
+            config('server-monitor.monitors'),
+            explode(',', $this->argument('monitor'))
+        );
 
         $monitors->each(function (BaseMonitor $monitor) {
             $monitor->runMonitor();
