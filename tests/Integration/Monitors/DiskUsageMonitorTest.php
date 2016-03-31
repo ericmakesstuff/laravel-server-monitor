@@ -2,7 +2,6 @@
 
 namespace EricMakesStuff\ServerMonitor\Test\Integration\Monitors;
 
-use EricMakesStuff\ServerMonitor\Events\DiskUsageHealthy;
 use EricMakesStuff\ServerMonitor\Exceptions\InvalidPath;
 use EricMakesStuff\ServerMonitor\Monitors\DiskUsageMonitor;
 use EricMakesStuff\ServerMonitor\Test\Integration\TestCase;

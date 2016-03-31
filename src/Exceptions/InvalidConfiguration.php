@@ -14,4 +14,9 @@ class InvalidConfiguration extends Exception
     {
         return new static("Could not find monitor named `{$monitorName}`.");
     }
+    
+    public static function noUrlConfigured()
+    {
+        return new static ("No URL Configured.");
+    }
 }

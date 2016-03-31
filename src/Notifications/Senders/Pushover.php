@@ -30,6 +30,7 @@ class Pushover extends BaseSender
                 'sound' => $this->type === static::TYPE_SUCCESS ? 'pushover' : 'siren',
             ],
             CURLOPT_SAFE_UPLOAD => true,
+            CURLOPT_RETURNTRANSFER => true,
         ]);
         curl_exec($ch);
         curl_close($ch);

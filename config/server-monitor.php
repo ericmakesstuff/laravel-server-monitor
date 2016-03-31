@@ -26,6 +26,21 @@ return [
                 'alarmPercentage' => 75,
             ],
         ],
+        /*
+         * HttpPing will perform an HTTP request to the configured URL and alert if the response code
+         * is not 200, or if the optional checkPhrase is not found in the response.
+         */
+        'HttpPing' => [
+            [
+                'url' => 'http://www.example.com/',
+            ],
+            [
+                'url' => 'http://www.example.com/',
+                'checkPhrase' => 'Example Domain',
+                'timeout' => 10,
+                'allowRedirects' => false,
+            ],
+        ],
     ],
 
     'notifications' => [
@@ -43,7 +58,9 @@ return [
          */
         'events' => [
             'whenDiskUsageHealthy' => ['log'],
-            'whenDiskUsageAlarm'   => ['log', 'mail']
+            'whenDiskUsageAlarm'   => ['log', 'mail'],
+            'whenHttpPingUp'       => ['log'],
+            'whenHttpPingDown'     => ['log', 'mail'],
         ],
 
         /*
