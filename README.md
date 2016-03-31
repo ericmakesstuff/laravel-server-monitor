@@ -14,7 +14,7 @@ Once installed, monitoring your server is very easy. Just issue this artisan com
 php artisan monitor:run
 ```
 
-You can run just certain monitors at a time:
+You can run only certain monitors at a time:
 
 ``` bash
 php artisan monitor:run DiskUsage
