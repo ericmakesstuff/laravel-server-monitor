@@ -21,6 +21,27 @@ php artisan monitor:run HttpPing
 php artisan monitor:run SSLCertificate,DiskUsage
 ```
 
+## How It Works
+
+Using the configuration file in your project, any number of monitors can be configured to check for problems with your server setup.
+
+When the `monitor:run` artisan command is executed, either from the command line or using the Laravel command scheduler, the monitors run and
+alert if there is an issue. The alarm state is configurable, and alerts can be sent to the log, or via email, Pushover, and Slack.
+
+##### Disk Usage Monitors
+
+Disk usage monitors check the percentage of the storage space that is used on the given partition, and alert if the percentage exceeds the configurable alarm percentage.
+
+##### HTTP Ping Monitors
+
+HTTP Ping monitors perform a simple page request and alert if the HTTP status code is _not_ 200. They can optionally check that a certain phrase is included in the source of the page.
+
+##### SSL Certificate Monitors
+
+SSL Certificate monitors pull the SSL certificate for the configured URL and make sure it is valid for that URL. Wildcard and multi-domain certificates are supported.
+
+The monitor will alert if the certificate is invalid or expired, and will also alert when the expiration date is approaching. The days on which to alert prior to expiration is also configurable.
+
 ## Installation and usage
 
 You can install this package via composer using:
@@ -91,6 +112,24 @@ The default monitor configurations are:
             'alarmDaysBeforeExpiration' => [14, 7],
         ],
     ],
+```
+
+## Alert Configuration
+
+Alerts can be logged to the default log handler, or sent via email, Pushover, or Slack. Allowed values are `log`, `mail`, `pushover`, and `slack`.
+
+The default alert configurations are:
+
+```php
+'events' => [
+    'whenDiskUsageHealthy'       => ['log'],
+    'whenDiskUsageAlarm'         => ['log', 'mail'],
+    'whenHttpPingUp'             => ['log'],
+    'whenHttpPingDown'           => ['log', 'mail'],
+    'whenSSLCertificateValid'    => ['log'],
+    'whenSSLCertificateInvalid'  => ['log', 'mail'],
+    'whenSSLCertificateExpiring' => ['log', 'mail'],
+],
 ```
 
 ## Scheduling
