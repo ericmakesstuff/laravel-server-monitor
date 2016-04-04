@@ -3,6 +3,7 @@
 namespace EricMakesStuff\ServerMonitor\Notifications;
 
 use EricMakesStuff\ServerMonitor\Monitors\HttpPingMonitor;
+use EricMakesStuff\ServerMonitor\Monitors\SSLCertificateMonitor;
 use Illuminate\Contracts\Logging\Log as LogContract;
 use EricMakesStuff\ServerMonitor\Monitors\DiskUsageMonitor;
 use Exception;
@@ -79,6 +80,45 @@ class Notifier
             'whenHttpPingDown',
             "HTTP Ping Failed: {$httpPingMonitor->getUrl()}!",
             "HTTP Ping Failed for {$httpPingMonitor->getUrl()}! Response Code {$httpPingMonitor->getResponseCode()}.{$additionalInfo}",
+            BaseSender::TYPE_ERROR
+        );
+    }
+
+    /**
+     * @param SSLCertificateMonitor $sslCertificateMonitor
+     */
+    public function sslCertificateValid(SSLCertificateMonitor $sslCertificateMonitor)
+    {
+        $this->sendNotification(
+            'whenSSLCertificateValid',
+            "SSL Certificate Valid: {$sslCertificateMonitor->getUrl()}",
+            "SSL Certificate is valid for {$sslCertificateMonitor->getUrl()}. Expires in {$sslCertificateMonitor->getCertificateDaysUntilExpiration()} days.",
+            BaseSender::TYPE_SUCCESS
+        );
+    }
+
+    /**
+     * @param SSLCertificateMonitor $sslCertificateMonitor
+     */
+    public function sslCertificateInvalid(SSLCertificateMonitor $sslCertificateMonitor)
+    {
+        $this->sendNotification(
+            'whenSSLCertificateInvalid',
+            "SSL Certificate Invalid: {$sslCertificateMonitor->getUrl()}",
+            "SSL Certificate is invalid for {$sslCertificateMonitor->getUrl()}. Certificate domain is {$sslCertificateMonitor->getCertificateDomain()}. Certificate expiration date is {$sslCertificateMonitor->getCertificateExpiration()} ({$sslCertificateMonitor->getCertificateDaysUntilExpiration()} days).",
+            BaseSender::TYPE_ERROR
+        );
+    }
+
+    /**
+     * @param SSLCertificateMonitor $sslCertificateMonitor
+     */
+    public function sslCertificateExpiring(SSLCertificateMonitor $sslCertificateMonitor)
+    {
+        $this->sendNotification(
+            'whenSSLCertificateInvalid',
+            "SSL Certificate Expiring: {$sslCertificateMonitor->getUrl()}",
+            "SSL Certificate for {$sslCertificateMonitor->getUrl()} is expiring on {$sslCertificateMonitor->getCertificateExpiration()} ({$sslCertificateMonitor->getCertificateDaysUntilExpiration()} days).",
             BaseSender::TYPE_ERROR
         );
     }

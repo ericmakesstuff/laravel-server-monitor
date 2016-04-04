@@ -16,11 +16,11 @@ class DiskUsageHealthyTest extends TestCase
     /** @test */
     public function it_will_fire_an_event_when_disk_usage_is_healthy()
     {
-        $this->app['config']->set('server-monitor.monitors.DiskUsage', [
+        $this->app['config']->set('server-monitor.monitors', ['DiskUsage' => [
             [
                 'alarmPercentage' => 99.99,
             ],
-        ]);
+        ]]);
 
         $this->expectsEvent(DiskUsageHealthy::class);
 

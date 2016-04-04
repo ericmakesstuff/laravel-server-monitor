@@ -16,11 +16,11 @@ class DiskUsageAlarmTest extends TestCase
     /** @test */
     public function it_will_fire_an_event_disk_usage_is_too_high()
     {
-        $this->app['config']->set('server-monitor.monitors.DiskUsage', [
+        $this->app['config']->set('server-monitor.monitors', ['DiskUsage' => [
             [
                 'alarmPercentage' => 0.01,
             ],
-        ]);
+        ]]);
 
         $this->expectsEvent(DiskUsageAlarm::class);
 
