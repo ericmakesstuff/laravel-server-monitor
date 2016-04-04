@@ -6,6 +6,9 @@ use EricMakesStuff\ServerMonitor\Events\HttpPingDown;
 use EricMakesStuff\ServerMonitor\Events\HttpPingUp;
 use EricMakesStuff\ServerMonitor\Events\DiskUsageAlarm;
 use EricMakesStuff\ServerMonitor\Events\DiskUsageHealthy;
+use EricMakesStuff\ServerMonitor\Events\SSLCertificateExpiring;
+use EricMakesStuff\ServerMonitor\Events\SSLCertificateInvalid;
+use EricMakesStuff\ServerMonitor\Events\SSLCertificateValid;
 use Illuminate\Events\Dispatcher;
 
 class EventHandler
@@ -55,6 +58,30 @@ class EventHandler
     }
 
     /**
+     * @param \EricMakesStuff\ServerMonitor\Events\SSLCertificateValid $event
+     */
+    public function whenSSLCertificateValid(SSLCertificateValid $event)
+    {
+        $this->notifier->sslCertificateValid($event->sslCertificateMonitor);
+    }
+
+    /**
+     * @param \EricMakesStuff\ServerMonitor\Events\SSLCertificateInvalid $event
+     */
+    public function whenSSLCertificateInvalid(SSLCertificateInvalid $event)
+    {
+        $this->notifier->sslCertificateInvalid($event->sslCertificateMonitor);
+    }
+
+    /**
+     * @param \EricMakesStuff\ServerMonitor\Events\SSLCertificateExpiring $event
+     */
+    public function whenSSLCertificateExpiring(SSLCertificateExpiring $event)
+    {
+        $this->notifier->sslCertificateExpiring($event->sslCertificateMonitor);
+    }
+
+    /**
      * Register the listeners for the subscriber.
      *
      * @param \Illuminate\Events\Dispatcher $events
@@ -81,6 +108,21 @@ class EventHandler
         $events->listen(
             HttpPingDown::class,
             static::class.'@whenHttpPingDown'
+        );
+
+        $events->listen(
+            SSLCertificateValid::class,
+            static::class.'@whenSSLCertificateValid'
+        );
+
+        $events->listen(
+            SSLCertificateInvalid::class,
+            static::class.'@whenSSLCertificateInvalid'
+        );
+
+        $events->listen(
+            SSLCertificateExpiring::class,
+            static::class.'@whenSSLCertificateExpiring'
         );
     }
 }

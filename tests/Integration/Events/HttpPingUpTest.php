@@ -16,11 +16,11 @@ class HttpPingUpTest extends TestCase
     /** @test */
     public function it_will_fire_an_event_when_http_is_up()
     {
-        $this->app['config']->set('server-monitor.monitors.DiskUsage', [
+        $this->app['config']->set('server-monitor.monitors', ['HttpPing' => [
             [
                 'url' => 'http://www.example.com/',
             ],
-        ]);
+        ]]);
 
         $this->expectsEvent(HttpPingUp::class);
 
@@ -30,12 +30,12 @@ class HttpPingUpTest extends TestCase
     /** @test */
     public function it_will_fire_an_event_when_http_is_up_and_phrase_is_found()
     {
-        $this->app['config']->set('server-monitor.monitors.DiskUsage', [
+        $this->app['config']->set('server-monitor.monitors', ['HttpPing' => [
             [
                 'url' => 'http://www.example.com/',
                 'checkPhrase' => 'Example Domain',
             ],
-        ]);
+        ]]);
 
         $this->expectsEvent(HttpPingUp::class);
 

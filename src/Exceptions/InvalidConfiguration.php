@@ -17,6 +17,21 @@ class InvalidConfiguration extends Exception
     
     public static function noUrlConfigured()
     {
-        return new static ("No URL Configured.");
+        return new static("No URL Configured.");
+    }
+
+    public static function urlNotSecure()
+    {
+        return new static("URL Not Secure");
+    }
+
+    public static function urlCouldNotBeParsed()
+    {
+        return new static("URL Could Not Be Parsed");
+    }
+
+    public static function urlCouldNotBeDownloaded()
+    {
+        return new static("URL Could Not Be Downloaded");
     }
 }

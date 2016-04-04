@@ -41,6 +41,20 @@ return [
                 'allowRedirects' => false,
             ],
         ],
+        /*
+         * SSLCertificate will download the SSL Certificate for the URL and validate that the domain
+         * is covered and that it is not expired. Additionally, it can warn when the certificate is
+         * approaching expiration.
+         */
+        'SSLCertificate' => [
+            [
+                'url' => 'https://www.example.com/',
+            ],
+            [
+                'url' => 'https://www.example.com/',
+                'alarmDaysBeforeExpiration' => [14, 7],
+            ],
+        ],
     ],
 
     'notifications' => [
@@ -57,10 +71,13 @@ return [
          * Slack requires the installation of the maknz/slack package.
          */
         'events' => [
-            'whenDiskUsageHealthy' => ['log'],
-            'whenDiskUsageAlarm'   => ['log', 'mail'],
-            'whenHttpPingUp'       => ['log'],
-            'whenHttpPingDown'     => ['log', 'mail'],
+            'whenDiskUsageHealthy'       => ['log'],
+            'whenDiskUsageAlarm'         => ['log', 'mail'],
+            'whenHttpPingUp'             => ['log'],
+            'whenHttpPingDown'           => ['log', 'mail'],
+            'whenSSLCertificateValid'    => ['log'],
+            'whenSSLCertificateInvalid'  => ['log', 'mail'],
+            'whenSSLCertificateExpiring' => ['log', 'mail'],
         ],
 
         /*

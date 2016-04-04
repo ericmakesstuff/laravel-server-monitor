@@ -6,7 +6,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/ericmakesstuff/laravel-server-monitor.svg?style=flat-square)](https://scrutinizer-ci.com/g/ericmakesstuff/laravel-server-monitor)
 [![Total Downloads](https://img.shields.io/packagist/dt/ericmakesstuff/laravel-server-monitor.svg?style=flat-square)](https://packagist.org/packages/ericmakesstuff/laravel-server-monitor)
 
-This Laravel 5 package will periodically monitor the health of your server. Currently, it provides healthy/alarm status notifications for Disk Usage, as well as an HTTP Ping function to monitor the health of external services.
+This Laravel 5 package will periodically monitor the health of your server and website. Currently, it provides healthy/alarm status notifications for Disk Usage, an HTTP Ping function to monitor the health of external services, and a validation/expiration monitor for SSL Certificates.
 
 Once installed, monitoring your server is very easy. Just issue this artisan command:
 
@@ -17,8 +17,8 @@ php artisan monitor:run
 You can run only certain monitors at a time:
 
 ``` bash
-php artisan monitor:run DiskUsage
-php artisan monitor:run DiskUsage,HttpPing
+php artisan monitor:run HttpPing
+php artisan monitor:run SSLCertificate,DiskUsage
 ```
 
 ## Installation and usage
@@ -75,6 +75,20 @@ The default monitor configurations are:
             'checkPhrase' => 'Example Domain',
             'timeout' => 10,
             'allowRedirects' => false,
+        ],
+    ],
+    /*
+     * SSLCertificate will download the SSL Certificate for the URL and validate that the domain
+     * is covered and that it is not expired. Additionally, it can warn when the certificate is
+     * approaching expiration.
+     */
+    'SSLCertificate' => [
+        [
+            'url' => 'https://www.example.com/',
+        ],
+        [
+            'url' => 'https://www.example.com/',
+            'alarmDaysBeforeExpiration' => [14, 7],
         ],
     ],
 ```
