@@ -45,8 +45,7 @@ class SSLCertificateMonitorTest extends TestCase
 
         $sslCertificateMonitor->runMonitor();
 
-        $this->assertEmpty($sslCertificateMonitor->getCertificateDomain());
-        $this->assertEmpty($sslCertificateMonitor->getCertificateDaysUntilExpiration());
+        $this->assertNotEquals('www.implode.com', $sslCertificateMonitor->getCertificateDomain());
     }
 
     /** @test */
