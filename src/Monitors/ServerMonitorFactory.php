@@ -19,7 +19,9 @@ class ServerMonitorFactory
             $monitors = $monitors->only($filter);
         }
 
-        return $monitors->map(function($monitorConfigs, $monitorName) {
+        $configured_monitors = collect();
+
+        $monitors->map(function($monitorConfigs, $monitorName) {
             if (file_exists(__DIR__.'/'.ucfirst($monitorName).'Monitor.php')) {
                 $className = '\\EricMakesStuff\\ServerMonitor\\Monitors\\'.ucfirst($monitorName).'Monitor';
                 return collect($monitorConfigs)->map(function($monitorConfig) use ($className) {
@@ -28,6 +30,12 @@ class ServerMonitorFactory
             }
 
             throw InvalidConfiguration::cannotFindMonitor($monitorName);
-        })->flatten();
+        })->each(function($monitor_group) use ($configured_monitors) {
+            $monitor_group->each(function($monitor) use ($configured_monitors) {
+                $configured_monitors->push($monitor);
+            });
+        });
+
+        return $configured_monitors;
     }
 }
