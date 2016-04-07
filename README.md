@@ -162,6 +162,11 @@ vendor/bin/phpunit
 
 More monitoring metrics. Feel free to submit ideas via issues or pull requests!
 
+##### Ideas
+
+ - Remote server disk space usage (over SSH)
+ - NTP Offset in seconds
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
