@@ -5,7 +5,7 @@ use EricMakesStuff\ServerMonitor\Helpers\ConsoleOutput;
 /**
  * @return \EricMakesStuff\ServerMonitor\Helpers\ConsoleOutput
  */
-function consoleOutput()
+function monitorConsoleOutput()
 {
     return app(ConsoleOutput::class);
 }
