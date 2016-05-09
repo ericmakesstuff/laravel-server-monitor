@@ -19,7 +19,10 @@
     "autoload": {
         "psr-4": {
             "EricMakesStuff\\ServerMonitor\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/functions.php"
+        ]
     },
     "require": {
         "illuminate/support": "^5.1",
