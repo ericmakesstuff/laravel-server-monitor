@@ -156,7 +156,7 @@ class Notifier
                         .$exception->getTraceAsString();
 
                     $this->log->error($errorMessage);
-                    consoleOutput()->error($errorMessage);
+                    monitorConsoleOutput()->error($errorMessage);
                 }
             });
     }
