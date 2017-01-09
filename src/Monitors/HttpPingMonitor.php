@@ -7,6 +7,7 @@ use EricMakesStuff\ServerMonitor\Events\HttpPingUp;
 use EricMakesStuff\ServerMonitor\Exceptions\InvalidConfiguration;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ResponseInterface;
 
 class HttpPingMonitor extends BaseMonitor
 {
@@ -72,8 +73,15 @@ class HttpPingMonitor extends BaseMonitor
             $this->responseContent = (string)$response->getBody();
         } catch (RequestException $e) {
             $response = $e->getResponse();
-            $this->responseCode = $response->getStatusCode();
-            $this->responseContent = (string)$response->getBody();
+
+            if ($response instanceof ResponseInterface) {
+                $this->responseCode = $response->getStatusCode();
+                $this->responseContent = (string)$response->getBody();
+            } else {
+                $this->responseCode = 500;
+                $this->responseContent = $e->getMessage() . PHP_EOL . $e->getTraceAsString();
+            }
+
         } catch (\Exception $e) {
             // To prevent command from crashing and let Notifier handle this
             $this->responseCode = 500;
