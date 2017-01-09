@@ -6,8 +6,8 @@ use EricMakesStuff\ServerMonitor\Events\HttpPingDown;
 use EricMakesStuff\ServerMonitor\Events\HttpPingUp;
 use EricMakesStuff\ServerMonitor\Exceptions\InvalidConfiguration;
 use GuzzleHttp\Client as Guzzle;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ResponseInterface;
 
 class HttpPingMonitor extends BaseMonitor
 {
@@ -71,10 +71,18 @@ class HttpPingMonitor extends BaseMonitor
             $response = $guzzle->get($this->url);
             $this->responseCode = $response->getStatusCode();
             $this->responseContent = (string)$response->getBody();
-        } catch (ClientException $e) {
+        } catch (RequestException $e) {
             $response = $e->getResponse();
-            $this->responseCode = $response->getStatusCode();
-        } catch (ConnectException $e) {
+
+            if ($response instanceof ResponseInterface) {
+                $this->responseCode = $response->getStatusCode();
+                $this->responseContent = (string)$response->getBody();
+            } else {
+                $this->setResponseCodeAndContentOnException($e);
+            }
+
+        } catch (\Exception $e) {
+            $this->setResponseCodeAndContentOnException($e);
         }
 
         if ($this->responseCode != '200'
@@ -83,6 +91,15 @@ class HttpPingMonitor extends BaseMonitor
         } else {
             event(new HttpPingUp($this));
         }
+    }
+
+    /**
+     * @param \Exception $e
+     */
+    protected function setResponseCodeAndContentOnException(\Exception $e)
+    {
+        $this->responseCode = null;
+        $this->responseContent = $e->getMessage() . PHP_EOL . $e->getTraceAsString();
     }
 
     protected function checkResponseContains($html, $phrase)
