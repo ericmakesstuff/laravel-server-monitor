@@ -78,14 +78,11 @@ class HttpPingMonitor extends BaseMonitor
                 $this->responseCode = $response->getStatusCode();
                 $this->responseContent = (string)$response->getBody();
             } else {
-                $this->responseCode = 500;
-                $this->responseContent = $e->getMessage() . PHP_EOL . $e->getTraceAsString();
+                $this->setResponseCodeAndContentOnException($e);
             }
 
         } catch (\Exception $e) {
-            // To prevent command from crashing and let Notifier handle this
-            $this->responseCode = 500;
-            $this->responseContent = $e->getMessage() . PHP_EOL . $e->getTraceAsString();
+            $this->setResponseCodeAndContentOnException($e);
         }
 
         if ($this->responseCode != '200'
@@ -94,6 +91,15 @@ class HttpPingMonitor extends BaseMonitor
         } else {
             event(new HttpPingUp($this));
         }
+    }
+
+    /**
+     * @param \Exception $e
+     */
+    protected function setResponseCodeAndContentOnException(\Exception $e)
+    {
+        $this->responseCode = null;
+        $this->responseContent = $e->getMessage() . PHP_EOL . $e->getTraceAsString();
     }
 
     protected function checkResponseContains($html, $phrase)
