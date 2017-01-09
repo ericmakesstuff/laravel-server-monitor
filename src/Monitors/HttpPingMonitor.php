@@ -6,8 +6,7 @@ use EricMakesStuff\ServerMonitor\Events\HttpPingDown;
 use EricMakesStuff\ServerMonitor\Events\HttpPingUp;
 use EricMakesStuff\ServerMonitor\Exceptions\InvalidConfiguration;
 use GuzzleHttp\Client as Guzzle;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 
 class HttpPingMonitor extends BaseMonitor
 {
@@ -71,10 +70,12 @@ class HttpPingMonitor extends BaseMonitor
             $response = $guzzle->get($this->url);
             $this->responseCode = $response->getStatusCode();
             $this->responseContent = (string)$response->getBody();
-        } catch (ClientException $e) {
+        } catch (RequestException $e) {
             $response = $e->getResponse();
             $this->responseCode = $response->getStatusCode();
-        } catch (ConnectException $e) {
+            $this->responseContent = (string)$response->getBody();
+        } catch (\Exception $e) {
+            // To prevent command from crashing and let Notifier handle this
         }
 
         if ($this->responseCode != '200'
