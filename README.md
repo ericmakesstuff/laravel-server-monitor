@@ -114,6 +114,21 @@ The default monitor configurations are:
     ],
 ```
 
+Optionally you can define configurations as anonymous functions. For example
+
+```php
+'monitors' => [
+    'HttpPing' => function(){
+        return \App\Models\Domain::all()->map(function(\App\Models\Domain $domain){
+            return [
+                'url'=>$domain->url,
+                'checkPhrase'=>$domain->check_phrase,
+            ];
+        })->toArray();
+    },
+]
+```
+
 ## Alert Configuration
 
 Alerts can be logged to the default log handler, or sent via email, Pushover, or Slack. Allowed values are `log`, `mail`, `pushover`, and `slack`.
