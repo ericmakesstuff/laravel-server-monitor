@@ -25,7 +25,7 @@ class ServerMonitorFactory
             if (file_exists(__DIR__.'/'.ucfirst($monitorName).'Monitor.php')) {
                 $className = '\\EricMakesStuff\\ServerMonitor\\Monitors\\'.ucfirst($monitorName).'Monitor';
                 return collect($monitorConfigs)->map(function($monitorConfig) use ($className) {
-                    return app($className, [$monitorConfig]);
+                    return new $className($monitorConfig);
                 });
             }
 
