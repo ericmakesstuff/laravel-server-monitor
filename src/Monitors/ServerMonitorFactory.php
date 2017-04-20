@@ -22,6 +22,10 @@ class ServerMonitorFactory
         $configured_monitors = collect();
 
         $monitors->map(function($monitorConfigs, $monitorName) {
+            if ($monitorConfigs instanceof \Closure) {
+                $monitorConfigs = call_user_func($monitorConfigs);
+            }
+            
             if (file_exists(__DIR__.'/'.ucfirst($monitorName).'Monitor.php')) {
                 $className = '\\EricMakesStuff\\ServerMonitor\\Monitors\\'.ucfirst($monitorName).'Monitor';
                 return collect($monitorConfigs)->map(function($monitorConfig) use ($className) {
