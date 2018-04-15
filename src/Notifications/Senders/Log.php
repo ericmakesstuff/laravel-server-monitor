@@ -2,16 +2,16 @@
 
 namespace EricMakesStuff\ServerMonitor\Notifications\Senders;
 
-use Illuminate\Contracts\Logging\Log as LogContract;
+use Psr\Log\LoggerInterface as LogContract;
 use EricMakesStuff\ServerMonitor\Notifications\BaseSender;
 
 class Log extends BaseSender
 {
-    /** @var \Illuminate\Contracts\Logging\Log */
+    /** @var \Psr\Log\LoggerInterface */
     protected $log;
 
     /**
-     * @param \Illuminate\Contracts\Logging\Log $log
+     * @param \Psr\Log\LoggerInterface $log
      */
     public function __construct(LogContract $log)
     {

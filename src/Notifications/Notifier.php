@@ -4,7 +4,7 @@ namespace EricMakesStuff\ServerMonitor\Notifications;
 
 use EricMakesStuff\ServerMonitor\Monitors\HttpPingMonitor;
 use EricMakesStuff\ServerMonitor\Monitors\SSLCertificateMonitor;
-use Illuminate\Contracts\Logging\Log as LogContract;
+use Psr\Log\LoggerInterface as LogContract;
 use EricMakesStuff\ServerMonitor\Monitors\DiskUsageMonitor;
 use Exception;
 
@@ -13,13 +13,13 @@ class Notifier
     /** @var array */
     protected $config;
 
-    /** @var \Illuminate\Contracts\Logging\Log */
+    /** @var \Psr\Log\LoggerInterface */
     protected $log;
 
     protected $serverName;
 
     /**
-     * @param \Illuminate\Contracts\Logging\Log $log
+     * @param \Psr\Log\LoggerInterface $log
      */
     public function __construct(LogContract $log)
     {
