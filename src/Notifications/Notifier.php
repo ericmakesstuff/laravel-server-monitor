@@ -4,7 +4,7 @@ namespace EricMakesStuff\ServerMonitor\Notifications;
 
 use EricMakesStuff\ServerMonitor\Monitors\HttpPingMonitor;
 use EricMakesStuff\ServerMonitor\Monitors\SSLCertificateMonitor;
-use Illuminate\Contracts\Logging\Log as LogContract;
+use Psr\Log\LoggerInterface as LogContract;
 use EricMakesStuff\ServerMonitor\Monitors\DiskUsageMonitor;
 use Exception;
 
