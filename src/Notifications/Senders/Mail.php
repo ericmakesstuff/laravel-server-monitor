@@ -29,11 +29,12 @@ class Mail extends BaseSender
     public function send()
     {
         $this->mailer->raw($this->message, function (Message $message) {
-
+          foreach ($this->config['to'] as $mailTo) {
             $message
-                ->subject($this->subject)
-                ->from($this->config['from'])
-                ->to($this->config['to']);
+              ->subject($this->subject)
+              ->from($this->config['from'])
+              ->to($mailTo);
+          }
         });
     }
 }
