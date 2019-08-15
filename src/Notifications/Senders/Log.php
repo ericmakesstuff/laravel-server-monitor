@@ -2,7 +2,7 @@
 
 namespace EricMakesStuff\ServerMonitor\Notifications\Senders;
 
-use Illuminate\Contracts\Logging\Log as LogContract;
+use Psr\Log\LoggerInterface as LogContract;
 use EricMakesStuff\ServerMonitor\Notifications\BaseSender;
 
 class Log extends BaseSender
